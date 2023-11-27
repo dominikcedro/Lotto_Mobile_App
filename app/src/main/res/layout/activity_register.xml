@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".RegisterActivity">
 
     <TextView
         android:id="@+id/WelcomeRegText"
         android:layout_width="386dp"
         android:layout_height="57dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="13dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="Hi! Please sign in!"
+        android:text="Hi! Please sign up!"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/RegEmailText"
@@ -28,53 +26,71 @@
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="-60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoginButton"
-        app:srcCompat="@drawable/podstawkazielonatlo" />
+        app:srcCompat="@drawable/podstawkazielonatlo"
+        tools:layout_editor_absoluteY="593dp" />
 
     <EditText
         android:id="@+id/RegEmailText"
         android:layout_width="236dp"
         android:layout_height="64dp"
         android:layout_marginStart="80dp"
+        android:layout_marginTop="22dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="Enter your email:"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/RegPassText"
+        app:layout_constraintBottom_toTopOf="@+id/editTextText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/WelcomeRegText" />
 
     <EditText
         android:id="@+id/RegPassText"
         android:layout_width="236dp"
         android:layout_height="64dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="80dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="Enter your password"
         android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/regPassText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RegEmailText" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+
+    <EditText
+        android:id="@+id/regPassText"
+        android:layout_width="236dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:hint="Enter your password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/LoginButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RegPassText" />
 
     <Button
         android:id="@+id/LoginButton"
         android:layout_width="115dp"
         android:layout_height="76dp"
         android:layout_marginStart="148dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="148dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="24dp"
         android:backgroundTint="@color/victory_green"
         android:text="Sign in"
         android:textColorHighlight="@color/victory_green"
@@ -83,19 +99,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RegPassText" />
+        app:layout_constraintTop_toBottomOf="@+id/regPassText" />
 
-    <TextView
-        android:id="@+id/toRegisterText"
-        android:layout_width="410dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="42dp"
-        android:layout_marginEnd="1dp"
-        android:text="test hahahaha"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="234dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="89dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="Enter your name:"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/RegPassText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoginButton" />
+        app:layout_constraintTop_toBottomOf="@+id/RegEmailText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
