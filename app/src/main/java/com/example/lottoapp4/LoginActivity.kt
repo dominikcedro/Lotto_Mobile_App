@@ -21,21 +21,20 @@ class LoginActivity : AppCompatActivity() {
         val spannableString = SpannableString(fullText)
         val startIndex = fullText.indexOf(clickableWord)
 
+        // if spannable string is clicked move to register activity
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
                 startActivity(intent)
             }
         }
-        spannableString.setSpan(
-            clickableSpan,
-            startIndex,
-            startIndex + clickableWord.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
+        spannableString.setSpan(clickableSpan, startIndex, startIndex + clickableWord.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         toRegisterText.text = spannableString
         toRegisterText.movementMethod = LinkMovementMethod.getInstance()
-        val buttonLogin = findViewById<Button>(R.id.registerButton)
-    }
-}
+
+        //if login button is clicked move to register activity
+        val loginButton: Button = findViewById<Button>(R.id.loginButton)
+
+
+    }}

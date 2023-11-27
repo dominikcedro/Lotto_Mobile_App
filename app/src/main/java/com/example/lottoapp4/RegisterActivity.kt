@@ -2,7 +2,6 @@ package com.example.lottoapp4
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -18,18 +17,13 @@ class RegisterActivity : AppCompatActivity() {
     private var inputName: EditText? = null
     private var inputPassword: EditText? = null
     private var inputRepPass: EditText? = null
-    private var registerButton: Button? = null
 
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
 
-        val inputEmail = findViewById<EditText>(R.id.RegEmailText)
-        val inputName = findViewById<EditText>(R.id.nameEditText)
-        val inputPassword = findViewById<EditText>(R.id.RegPassText)
-        val inputPasswordRepeat = findViewById<EditText>(R.id.RegPassText2)
-        val registerButton: Button = findViewById<Button>(R.id.registerButton)
+        val registerButton: Button = findViewById<Button>(R.id.loginButton)
 
         registerButton.setOnClickListener{
             validateRegisterDetails()
@@ -93,12 +87,6 @@ class RegisterActivity : AppCompatActivity() {
                     }
                 }
         }
-    }
-
-    fun  userRegistrationSuccess(){
-
-        Toast.makeText(this@RegisterActivity, resources.getString(R.string.register_success),
-            Toast.LENGTH_LONG).show()
     }
 
 
