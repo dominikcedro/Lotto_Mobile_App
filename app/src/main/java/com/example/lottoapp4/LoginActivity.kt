@@ -36,13 +36,6 @@ class LoginActivity : AppCompatActivity() {
 
         toRegisterText.text = spannableString
         toRegisterText.movementMethod = LinkMovementMethod.getInstance()
-        val buttonLogin = findViewById<Button>(R.id.LoginButton)
-
-        buttonLogin.setOnClickListener {
-
-
-            val intent = Intent(this, NumbSelectionActitivy::class.java)
-            startActivity(intent)
-        }
+        val buttonLogin = findViewById<Button>(R.id.registerButton)
     }
 }

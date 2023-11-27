@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LottoApp4</string>
+    <string name="register_success">Incorrect Input</string>
 </resources>

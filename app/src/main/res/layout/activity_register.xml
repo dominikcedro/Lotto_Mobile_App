@@ -11,6 +11,7 @@
         android:layout_width="386dp"
         android:layout_height="57dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif-condensed"
@@ -19,6 +20,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/RegEmailText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,20 +32,20 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/podstawkazielonatlo"
-        tools:layout_editor_absoluteY="593dp" />
+        tools:layout_editor_absoluteY="601dp" />
 
     <EditText
         android:id="@+id/RegEmailText"
         android:layout_width="236dp"
         android:layout_height="64dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="80dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="Enter your email:"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/editTextText"
+        app:layout_constraintBottom_toTopOf="@+id/nameEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,59 +56,60 @@
         android:layout_width="236dp"
         android:layout_height="64dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="80dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="Enter your password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/regPassText"
+        app:layout_constraintBottom_toTopOf="@+id/RegPassText2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
 
     <EditText
-        android:id="@+id/regPassText"
+        android:id="@+id/RegPassText2"
         android:layout_width="236dp"
         android:layout_height="64dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="Enter your password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/LoginButton"
+        app:layout_constraintBottom_toTopOf="@+id/registerButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RegPassText" />
+        app:layout_constraintTop_toBottomOf="@+id/RegPassText"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/LoginButton"
+        android:id="@+id/registerButton"
         android:layout_width="115dp"
         android:layout_height="76dp"
         android:layout_marginStart="148dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="148dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="58dp"
         android:backgroundTint="@color/victory_green"
-        android:text="Sign in"
+        android:text="Sign up"
         android:textColorHighlight="@color/victory_green"
         android:textColorLink="@color/victory_green"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/regPassText" />
+        app:layout_constraintTop_toBottomOf="@+id/RegPassText2" />
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/nameEditText"
         android:layout_width="234dp"
         android:layout_height="66dp"
         android:layout_marginStart="89dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="88dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
@@ -114,7 +117,9 @@
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/RegPassText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RegEmailText" />
+        app:layout_constraintTop_toBottomOf="@+id/RegEmailText"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
