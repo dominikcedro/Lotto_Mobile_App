@@ -3,4 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="victory_green">#078846</color>
+    <color name="no_win_yellow">#FBD825</color>
+
 </resources>

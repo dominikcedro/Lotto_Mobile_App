@@ -1,93 +1,99 @@
 package com.example.lottoapp4
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import android.util.Log
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
-import android.text.TextUtils
+import com.google.firebase.auth.FirebaseUser
+import java.util.regex.Pattern
 
-class RegisterActivity : AppCompatActivity() {
-
-    private lateinit var auth: FirebaseAuth
-    private var inputEmail: EditText? = null
-    private var inputName: EditText? = null
-    private var inputPassword: EditText? = null
-    private var inputRepPass: EditText? = null
-
-
-    public override fun onCreate(savedInstanceState: Bundle?) {
+class RegisterActivity : AppCompatActivity(){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = Firebase.auth
+        setContentView(R.layout.activity_register)
+        val btn_register = findViewById<Button>(R.id.registerUserButton)
+        val et_register_email = findViewById<EditText>(R.id.RegEmailText)
+        val et_register_password = findViewById<EditText>(R.id.RegPassText)
 
-        val registerButton: Button = findViewById<Button>(R.id.loginButton)
-
-        registerButton.setOnClickListener{
-            validateRegisterDetails()
-            registerUser()
-
-        }
-
-    }
-    private fun validateRegisterDetails(): Boolean {
-    // if any of input fields are empty show snackbar message "incorrect" and return false if all the fields are filled return true
-        if (TextUtils.isEmpty(inputEmail?.text.toString())) {
-            Toast.makeText(applicationContext, "Please enter email...", Toast.LENGTH_LONG).show()
-            return false
-        }
-        if (TextUtils.isEmpty(inputName?.text.toString())) {
-            Toast.makeText(applicationContext, "Please enter name...", Toast.LENGTH_LONG).show()
-            return false
-        }
-        if (TextUtils.isEmpty(inputPassword?.text.toString())) {
-            Toast.makeText(applicationContext, "Please enter password...", Toast.LENGTH_LONG).show()
-            return false
-        }
-        if (TextUtils.isEmpty(inputRepPass?.text.toString())) {
-            Toast.makeText(applicationContext, "Please repeat password...", Toast.LENGTH_LONG).show()
-            return false
-        }
-        return true
-    }
-    // here create users
-    private fun registerUser() {
-        if (validateRegisterDetails()) {
-            auth.createUserWithEmailAndPassword(
-                inputEmail?.text.toString(),
-                inputPassword?.text.toString()
-            )
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(
-                            applicationContext,
-                            "Registration successful!",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        val user = auth.currentUser
-                        user?.sendEmailVerification()
-                            ?.addOnCompleteListener { task ->
+        btn_register.setOnClickListener{
+            when{
+                TextUtils.isEmpty(et_register_email.text.toString().trim{it <= ' '}) -> {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Please enter email.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                TextUtils.isEmpty(et_register_password.text.toString().trim{it <= ' '}) -> {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Please enter password.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                !isPasswordValid(et_register_password.text.toString().trim { it <= ' ' }) -> {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Password must be at least 6 characters long and contain a special character.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else -> {
+                    val email: String = et_register_email.text.toString().trim{it <= ' '}
+                    val password: String = et_register_password.text.toString().trim{it <= ' '}
+                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(
+                            OnCompleteListener<AuthResult> { task ->
                                 if (task.isSuccessful) {
+                                    val firebaseUser: FirebaseUser = task.result!!.user!!
                                     Toast.makeText(
-                                        applicationContext,
-                                        "Verification email sent!",
-                                        Toast.LENGTH_LONG
+                                        this@RegisterActivity,
+                                        "You are registered successfully",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    val intent =
+                                        Intent(this@RegisterActivity, LoginActivity::class.java)
+
+                                    intent.flags =
+                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    intent.putExtra("user_id", firebaseUser.uid)
+                                    intent.putExtra("email_id", email)
+                                    intent.putExtra("password", password)
+                                    startActivity(intent)
+                                    finish()
+                                } else {
+                                    Toast.makeText(
+                                        this@RegisterActivity,
+                                        task.exception!!.message.toString(),
+                                        Toast.LENGTH_SHORT
                                     ).show()
                                 }
                             }
-                        finish()
-                    } else {
-                        Toast.makeText(
-                            applicationContext,
-                            "Registration failed! Please try again later",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+                        )
                 }
+            }
         }
-    }
+
+
 
 
     }
+    private fun isPasswordValid(password: String): Boolean {
+        // Check if password is at least 6 characters long
+        if (password.length < 6) {
+            return false
+        }
+        val specialCharacterRegex = Pattern.compile("[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+")
+        return specialCharacterRegex.matcher(password).find()
+}
+}

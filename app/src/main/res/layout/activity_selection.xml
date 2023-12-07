@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectionActivity">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="299dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="8dp"
+        android:text="Pick your numbers, let's see if you are lucky!"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/numbersPicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <NumberPicker
+        android:id="@+id/numbersPicker"
+        android:layout_width="175dp"
+        android:layout_height="170dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="118dp"
+        android:layout_marginBottom="8dp"
+        android:background="#D88F21"
+        android:backgroundTint="#E85F1F"
+        android:solidColor="#FFF200"
+        app:layout_constraintBottom_toTopOf="@+id/selectButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/selectButton"
+        android:layout_width="126dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="134dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="134dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/no_win_yellow"
+        android:text="SELECT"
+        app:layout_constraintBottom_toTopOf="@+id/selectNumbersText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numbersPicker" />
+
+    <TextView
+        android:id="@+id/selectedNumbersView"
+        android:layout_width="305dp"
+        android:layout_height="84dp"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginBottom="8dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/getRichButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectNumbersText" />
+
+    <Button
+        android:id="@+id/getRichButton"
+        android:layout_width="196dp"
+        android:layout_height="71dp"
+        android:layout_marginStart="107dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/no_win_yellow"
+        android:text="GET RICH!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectedNumbersView" />
+
+    <TextView
+        android:id="@+id/selectNumbersText"
+        android:layout_width="335dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="37dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="8dp"
+        android:text="Your numbers:"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/selectedNumbersView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
