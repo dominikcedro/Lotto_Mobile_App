@@ -18,70 +18,60 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/podstawkazielonatlo" />
 
+
     <Button
         android:id="@+id/randomnumber4"
         android:layout_width="72dp"
         android:layout_height="77dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="170dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="57dp"
         android:text=""
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/winmessage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/randomnumber5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/randomnumber2" />
+        app:layout_constraintTop_toBottomOf="@+id/randomnumber1" />
 
     <Button
         android:id="@+id/randomnumber1"
         android:layout_width="72dp"
         android:layout_height="77dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="170dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="58dp"
         android:text=""
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/randomnumber4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.036"
+        app:layout_constraintEnd_toStartOf="@+id/randomnumber2"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numbersUser" />
+        app:layout_constraintTop_toBottomOf="@+id/greeting" />
 
     <Button
         android:id="@+id/randomnumber6"
         android:layout_width="72dp"
         android:layout_height="77dp"
-        android:layout_marginStart="169dp"
+        android:layout_marginStart="62dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="36dp"
         android:text=""
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/winmessage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.942"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/randomnumber2" />
-
+        app:layout_constraintStart_toEndOf="@+id/randomnumber5"
+        app:layout_constraintTop_toBottomOf="@+id/randomnumber3" />
 
     <Button
         android:id="@+id/randomnumber3"
         android:layout_width="72dp"
         android:layout_height="77dp"
-        android:layout_marginStart="170dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="36dp"
         android:text=""
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/randomnumber6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.941"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numbersUser" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/randomnumber2"
+        app:layout_constraintTop_toBottomOf="@+id/greeting" />
 
     <Button
         android:id="@+id/randomnumber5"
@@ -90,10 +80,8 @@
         android:layout_marginStart="169dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="170dp"
-        android:layout_marginBottom="32dp"
         android:text=""
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/winmessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,22 +92,21 @@
         android:layout_width="72dp"
         android:layout_height="77dp"
         android:layout_marginStart="170dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="170dp"
-        android:layout_marginBottom="32dp"
         android:text=""
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/randomnumber5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numbersUser" />
+        app:layout_constraintTop_toBottomOf="@+id/greeting" />
 
     <TextView
-        android:id="@+id/numbersUser"
+        android:id="@+id/greeting"
         android:layout_width="328dp"
         android:layout_height="100dp"
         android:layout_marginStart="42dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="41dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif-condensed"
@@ -138,21 +125,22 @@
         android:layout_height="112dp"
         android:layout_marginStart="105dp"
         android:layout_marginEnd="105dp"
-        android:layout_marginBottom="3dp"
         android:backgroundTint="@color/victory_green"
         android:text="GET NUMBERS"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/winmessage" />
 
     <TextView
         android:id="@+id/winmessage"
         android:layout_width="337dp"
         android:layout_height="63dp"
         android:layout_marginStart="37dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="37dp"
+        android:layout_marginBottom="8dp"
         android:hint="Let's see if you win!"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/generateNumbersButton"

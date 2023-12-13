@@ -6,15 +6,27 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.TextView
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.auth.User
+import com.google.firebase.firestore.firestore
 
 class SelectionActivity : AppCompatActivity() {
+    val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_selection)
         val intent = intent
+
+        // this below change to .get from db
         val name = intent.getStringExtra("NAME")
         val email = intent.getStringExtra("EMAIL")
         val phone = intent.getStringExtra("PHONE")
+
+//        db.collection("users").document(email.toString()).get().addOnSuccessListener {
+//            val user = it.toObject(User::class.java)
+//            val name = user?.mail
+//            val email = user?.password
+//        }
 
         //this here is a greeting for user, it uses the "name" from before
         val welcomeText = findViewById<TextView>(R.id.selectNumbersText)
@@ -24,7 +36,7 @@ class SelectionActivity : AppCompatActivity() {
 
         //this here defines numberPicker that I found in the internet
         val numbersPicker = findViewById<NumberPicker>(R.id.numbersPicker)
-        numbersPicker.maxValue = 49
+        numbersPicker.maxValue = 6
         numbersPicker.minValue=1
 
         //defining the buttons on this screen

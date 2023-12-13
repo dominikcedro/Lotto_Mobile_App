@@ -27,11 +27,7 @@ class DrawingActivity : AppCompatActivity() {
         val receivedNumbers = intent.getIntArrayExtra("SELECTEDNUMBERS")
         val numbersRecieved = receivedNumbers?.toMutableSet()
         //if recieved numbers are not null they will be displayed in textView
-        if (receivedNumbers != null) {
-            val numbersSet = receivedNumbers.toMutableSet()
-            val numbersTextView = findViewById<TextView>(R.id.numbersUser)
-            numbersTextView.text = "${numbersSet.joinToString(", ")}"
-        }
+
 
         //it's a function that generated a set of 6 random numbers with no repetitions
         fun generateRandomNumbers(): MutableSet<Int> {
@@ -39,7 +35,7 @@ class DrawingActivity : AppCompatActivity() {
             val numbers = mutableSetOf<Int>()
 
             while (numbers.size < 6) {
-                val randomNumber = random.nextInt(49) + 1
+                val randomNumber = random.nextInt(6) + 1
                 numbers.add(randomNumber)}
             return numbers
         }

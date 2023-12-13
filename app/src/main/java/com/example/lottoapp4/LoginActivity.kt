@@ -20,9 +20,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.firestore
 import java.util.regex.Pattern
 
 class LoginActivity : AppCompatActivity() {
+
+    val db = Firebase.firestore
+
     private fun isPasswordValid(password: String): Boolean {
         // Check if password is at least 6 characters long
         if (password.length < 6) {
@@ -37,8 +41,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val userEmail = intent.getStringExtra("email_id")
-        val password = intent.getStringExtra("password")
+//        val userEmail = intent.getStringExtra("email_id")
+//        val password = intent.getStringExtra("password")
 
         val LogEmailText = findViewById<EditText>(R.id.LogEmailText)
         val LogPassText = findViewById<EditText>(R.id.LogPassText)
@@ -103,6 +107,25 @@ class LoginActivity : AppCompatActivity() {
                                     "You are logged in successfully",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                // here put db entry
+                                val user = hashMapOf(
+                                    "password" to password
+                                )
+                                db.collection("users")
+                                    .add(user)
+                                    .addOnSuccessListener { documentReference ->
+                                        Log.d(
+                                            "TAG",
+                                            "DocumentSnapshot added with ID: ${documentReference.id}"
+                                        )
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.w(
+                                            "TAG",
+                                            "Error adding document",
+                                            e
+                                        )
+                                    }
 
                                 val intent =
                                     Intent(this@LoginActivity, SelectionActivity::class.java)
