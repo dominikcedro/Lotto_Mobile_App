@@ -6,31 +6,23 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.TextView
+import android.widget.Toast
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.firestore
 
 class SelectionActivity : AppCompatActivity() {
-    val db = Firebase.firestore
+    val db1 = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_selection)
         val intent = intent
 
-        // this below change to .get from db
-        val name = intent.getStringExtra("NAME")
-        val email = intent.getStringExtra("EMAIL")
-        val phone = intent.getStringExtra("PHONE")
-
-//        db.collection("users").document(email.toString()).get().addOnSuccessListener {
-//            val user = it.toObject(User::class.java)
-//            val name = user?.mail
-//            val email = user?.password
-//        }
 
         //this here is a greeting for user, it uses the "name" from before
         val welcomeText = findViewById<TextView>(R.id.selectNumbersText)
-        welcomeText.text = "$name, please select your lucky numbers"
+        welcomeText.text = " please select your lucky numbers"
 
         val numbersText = findViewById<TextView>(R.id.selectedNumbersView)
 
@@ -58,7 +50,7 @@ class SelectionActivity : AppCompatActivity() {
             //I used if/else statement to check if the number is contained in set of INTs
             if (selectedNumbers.contains(selectedNumber)) {
                 //if it's already contained nothing happens, I think that's simpler
-                welcomeText.text = "Hey $name, you can't pick this number again!"
+                welcomeText.text = "Hey , you can't pick this number again!"
             } else {
                 welcomeText.text = "Good choice!"
                 //if it's not contained in the set the number will be added to set
@@ -73,14 +65,26 @@ class SelectionActivity : AppCompatActivity() {
                 if (selectedNumbers.size == numbersArray.size) {
                     selectButton.isEnabled = false
                     getRichButton.isEnabled = true
+                    val id = FirebaseAuth.getInstance().currentUser!!.uid
+                    val email = FirebaseAuth.getInstance().currentUser!!.email.toString()
+//                    val numbers = hashMapOf(
+//                        "user_id" to id,
+//                        "email" to email,
+//                        "selected_numbers" to selectedNumbers,
+//                        "random_numbers" to mutableSetOf<Int>()
+//                    )
+//                    db1.collection("usersNumbers")
+//                        .document(FirebaseAuth.getInstance().currentUser!!.email.toString())
+//                        .set(numbers)
                 }
             }
         }
         //if the user clicks on getRichButton next activity will be started
         //also selected numbers will be transfered to NumbDrawingActivity as a INTArray
         getRichButton.setOnClickListener{
+
             val intent4 = Intent(this, DrawingActivity::class.java)
-            intent4.putExtra("SELECTEDNUMBERS", selectedNumbers.toIntArray())
+
             startActivity(intent4)
         }
     }

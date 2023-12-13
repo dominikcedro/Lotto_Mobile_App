@@ -14,15 +14,19 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.firestore
 import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity(){
+
+    val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         val btn_register = findViewById<Button>(R.id.registerUserButton)
         val et_register_email = findViewById<EditText>(R.id.RegEmailText)
         val et_register_password = findViewById<EditText>(R.id.RegPassText)
+        val et_register_name = findViewById<EditText>(R.id.nameEditText)
 
         btn_register.setOnClickListener{
             when{
@@ -48,6 +52,7 @@ class RegisterActivity : AppCompatActivity(){
                     ).show()
                 }
                 else -> {
+                    val name: String = et_register_name.text.toString().trim{it <= ' '}
                     val email: String = et_register_email.text.toString().trim{it <= ' '}
                     val password: String = et_register_password.text.toString().trim{it <= ' '}
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
@@ -60,16 +65,18 @@ class RegisterActivity : AppCompatActivity(){
                                         "You are registered successfully",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    // create collection users in firestore, add name, mail and password
+                                    val user = hashMapOf(
+                                        "name" to name,
+                                        "email" to email,
+                                        "password" to password
+                                    )
+                                    db.collection("users").document(FirebaseAuth.getInstance().currentUser!!.email.toString()).set(user)
+
 
                                     val intent =
                                         Intent(this@RegisterActivity, LoginActivity::class.java)
-
-                                    intent.flags =
-                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    intent.putExtra("user_id", firebaseUser.uid)
-                                    intent.putExtra("email_id", email)
-                                    intent.putExtra("password", password)
-                                    startActivity(intent)
+                                   startActivity(intent)
                                     finish()
                                 } else {
                                     Toast.makeText(
@@ -83,10 +90,6 @@ class RegisterActivity : AppCompatActivity(){
                 }
             }
         }
-
-
-
-
     }
     private fun isPasswordValid(password: String): Boolean {
         // Check if password is at least 6 characters long

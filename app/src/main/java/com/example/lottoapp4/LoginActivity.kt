@@ -107,25 +107,9 @@ class LoginActivity : AppCompatActivity() {
                                     "You are logged in successfully",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                // here put db entry
-                                val user = hashMapOf(
-                                    "password" to password
-                                )
-                                db.collection("users")
-                                    .add(user)
-                                    .addOnSuccessListener { documentReference ->
-                                        Log.d(
-                                            "TAG",
-                                            "DocumentSnapshot added with ID: ${documentReference.id}"
-                                        )
-                                    }
-                                    .addOnFailureListener { e ->
-                                        Log.w(
-                                            "TAG",
-                                            "Error adding document",
-                                            e
-                                        )
-                                    }
+                                // get name of current user from firestore
+
+
 
                                 val intent =
                                     Intent(this@LoginActivity, SelectionActivity::class.java)
