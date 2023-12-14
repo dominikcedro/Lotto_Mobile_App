@@ -7,11 +7,9 @@ import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import android.util.Log
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.firestore
@@ -65,13 +63,14 @@ class RegisterActivity : AppCompatActivity(){
                                         "You are registered successfully",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    // create collection users in firestore, add name, mail and password
-                                    val user = hashMapOf(
-                                        "name" to name,
-                                        "email" to email,
-                                        "password" to password
+
+                                    val user = User(
+                                        FirebaseAuth.getInstance().currentUser!!.uid.toString(),
+                                        name,
+                                        email,
+                                        password
                                     )
-                                    db.collection("users").document(FirebaseAuth.getInstance().currentUser!!.email.toString()).set(user)
+                                    FireStoreClass().registerUserFS(this@RegisterActivity, user)
 
 
                                     val intent =
@@ -99,4 +98,5 @@ class RegisterActivity : AppCompatActivity(){
         val specialCharacterRegex = Pattern.compile("[!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+")
         return specialCharacterRegex.matcher(password).find()
 }
+
 }

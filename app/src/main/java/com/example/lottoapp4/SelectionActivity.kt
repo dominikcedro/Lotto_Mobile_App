@@ -13,16 +13,24 @@ import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.firestore
 
 class SelectionActivity : AppCompatActivity() {
-    val db1 = Firebase.firestore
+    val db2 = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_selection)
         val intent = intent
-
+        // get name from users firestore database
+        var name: String? = null
+        db2.collection("users")
+            .document(FirebaseAuth.getInstance().currentUser?.email.toString())
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    name = document.getString("name")
+                }
 
         //this here is a greeting for user, it uses the "name" from before
         val welcomeText = findViewById<TextView>(R.id.selectNumbersText)
-        welcomeText.text = " please select your lucky numbers"
+        welcomeText.text = "$name please select your lucky numbers"
 
         val numbersText = findViewById<TextView>(R.id.selectedNumbersView)
 
@@ -50,9 +58,9 @@ class SelectionActivity : AppCompatActivity() {
             //I used if/else statement to check if the number is contained in set of INTs
             if (selectedNumbers.contains(selectedNumber)) {
                 //if it's already contained nothing happens, I think that's simpler
-                welcomeText.text = "Hey , you can't pick this number again!"
+                welcomeText.text = "Hey $name , you can't pick this number again!"
             } else {
-                welcomeText.text = "Good choice!"
+                welcomeText.text = "Good choice $name !"
                 //if it's not contained in the set the number will be added to set
                 selectedNumbers.add(selectedNumber)
                 //and transformed to string with blank space on side
@@ -65,17 +73,22 @@ class SelectionActivity : AppCompatActivity() {
                 if (selectedNumbers.size == numbersArray.size) {
                     selectButton.isEnabled = false
                     getRichButton.isEnabled = true
-                    val id = FirebaseAuth.getInstance().currentUser!!.uid
-                    val email = FirebaseAuth.getInstance().currentUser!!.email.toString()
-//                    val numbers = hashMapOf(
-//                        "user_id" to id,
-//                        "email" to email,
-//                        "selected_numbers" to selectedNumbers,
-//                        "random_numbers" to mutableSetOf<Int>()
-//                    )
-//                    db1.collection("usersNumbers")
-//                        .document(FirebaseAuth.getInstance().currentUser!!.email.toString())
-//                        .set(numbers)
+                    val userId = FirebaseAuth.getInstance().currentUser!!.uid
+                    val email =  FirebaseAuth.getInstance().currentUser?.email.toString()
+                    val listOfNumbers =selectedNumbers.toList()
+                    val firebaseData = FirestoreData(email, listOfNumbers, null, 0.0)
+
+                    userId?.let {
+                        db2.collection("usersNumbers").document(email)
+                            .set(firebaseData)
+                            .addOnSuccessListener { documentReference ->
+                                // Handle success
+                                println("Document added with ID: ${email}")
+                            }
+                            .addOnFailureListener { e ->
+                                // Handle failure
+                                println("Error adding document: $e")
+                            }
                 }
             }
         }
@@ -88,5 +101,5 @@ class SelectionActivity : AppCompatActivity() {
             startActivity(intent4)
         }
     }
-}
+}}}
 
