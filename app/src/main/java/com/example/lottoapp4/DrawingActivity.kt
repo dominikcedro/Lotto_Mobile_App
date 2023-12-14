@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
 class DrawingActivity : AppCompatActivity() {
-    val db = Firebase.firestore
+    val db3 = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_drawing)
@@ -23,13 +23,19 @@ class DrawingActivity : AppCompatActivity() {
         val numbersGeneratedButton = findViewById<TextView>(R.id.generateNumbersButton)
         val number_good = ContextCompat.getColor(this, R.color.victory_green)
         val number_bad = ContextCompat.getColor(this, R.color.no_win_yellow)
-
         val winmessage = findViewById<TextView>(R.id.winmessage)
 
+        //get selNum from firestore
+        val email =  FirebaseAuth.getInstance().currentUser?.email.toString()
+        db3.collection("usersNumbers").document(email)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val selNum = document.get("selNumb") as List<Int>
 
         //here I recall selected numbers from the previous activity
-        val receivedNumbers = intent.getIntArrayExtra("SELECTEDNUMBERS")
-        val numbersRecieved = receivedNumbers?.toMutableSet()
+        val receivedNumbers = selNum
+        val numbersRecieved = receivedNumbers.toMutableSet()
         //if recieved numbers are not null they will be displayed in textView
 
 
@@ -128,7 +134,27 @@ class DrawingActivity : AppCompatActivity() {
             if (numbersRecieved != null) {
                 checkWin(RandomNumbers, numbersRecieved)
             }
+
+            val userId = FirebaseAuth.getInstance().currentUser!!.uid
+            val email =  FirebaseAuth.getInstance().currentUser?.email.toString()
+            val listOfNumbers =RandomNumbers.toList()
+            val updates = mapOf(
+                "randomNumbers" to listOfNumbers,
+            )
+
+            userId?.let {
+                db3.collection("usersNumbers").document(email)
+                    .update(updates)
+                    .addOnSuccessListener { documentReference ->
+                        // Handle success
+                        println("Document added with ID: ${email}")
+                    }
+                    .addOnFailureListener { e ->
+                        // Handle failure
+                        println("Error adding document: $e")
+                    }
+            }
         }
 
     }
-}
+}}}
