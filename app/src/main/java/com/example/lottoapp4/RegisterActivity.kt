@@ -7,6 +7,8 @@ import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.lottoapp4.Firestore.FireStoreClass
+import com.example.lottoapp4.Firestore.User
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -51,7 +53,8 @@ class RegisterActivity : AppCompatActivity(){
                 }
                 else -> {
                     val name: String = et_register_name.text.toString().trim{it <= ' '}
-                    val email: String = et_register_email.text.toString().trim{it <= ' '}
+                    val email: String = et_register_email.text
+                        .toString().trim{it <= ' '}
                     val password: String = et_register_password.text.toString().trim{it <= ' '}
                     FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(

@@ -1,5 +1,6 @@
 package com.example.lottoapp4
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
@@ -8,13 +9,18 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Button
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import com.example.lottoapp4.Firestore.Games
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class DrawingActivity : AppCompatActivity() {
     val db3 = Firebase.firestore
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_drawing)
@@ -27,18 +33,12 @@ class DrawingActivity : AppCompatActivity() {
 
         //get selNum from firestore
         val email =  FirebaseAuth.getInstance().currentUser?.email.toString()
-        db3.collection("usersNumbers").document(email)
+        db3.collection("usersGames").document("currentGame")
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    val selNum = document.get("selNumb") as List<Int>
-
-        //here I recall selected numbers from the previous activity
-        val receivedNumbers = selNum
-        val numbersRecieved = receivedNumbers.toMutableSet()
-        //if recieved numbers are not null they will be displayed in textView
-
-
+                    val selectedNumbers = document.get("selNumb") as List<Int>
+                }
         //it's a function that generated a set of 6 random numbers with no repetitions
         fun generateRandomNumbers(): MutableSet<Int> {
             val random = Random()
@@ -69,14 +69,14 @@ class DrawingActivity : AppCompatActivity() {
                 button.text = "${randomNumbers.elementAt(index)}"
             }
         }
-        fun checkNumbersChangeButtons(RandomNumbers:MutableSet<Int>, recievedNumbers:MutableSet<Int>){
+        fun checkNumbersChangeButtons(RandomNumbers:MutableSet<Int>, selectedNumbers:MutableSet<Int>){
             val buttonIds = arrayOf(
                 R.id.randomnumber1, R.id.randomnumber2,
                 R.id.randomnumber3, R.id.randomnumber4,
                 R.id.randomnumber5, R.id.randomnumber6
             )
             for ((index, RandomNumber) in RandomNumbers.withIndex()){
-                if (recievedNumbers.contains(RandomNumber)){
+                if (selectedNumbers.contains(RandomNumber)){
 
                     val button = findViewById<Button>(getButtonID(index))
                     button.setBackgroundColor(number_good)
@@ -121,40 +121,40 @@ class DrawingActivity : AppCompatActivity() {
 
 
         numbersGeneratedButton.setOnClickListener {
-
+            val selectedNumbers = document.get("selNumb") as MutableSet<Int>
             val RandomNumbers = generateRandomNumbers()
             numbersGeneratedButton.isEnabled = false
             hideButtons()
             updateButtonLabels(RandomNumbers)
-            if (numbersRecieved != null) {
-                checkNumbersChangeButtons(RandomNumbers, numbersRecieved)
+            if (selectedNumbers != null) {
+                checkNumbersChangeButtons(RandomNumbers, selectedNumbers)
 
             }
             showButtons()
-            if (numbersRecieved != null) {
-                checkWin(RandomNumbers, numbersRecieved)
+            if (selectedNumbers != null) {
+                checkWin(RandomNumbers, selectedNumbers)
             }
 
             val userId = FirebaseAuth.getInstance().currentUser!!.uid
             val email =  FirebaseAuth.getInstance().currentUser?.email.toString()
-            val listOfNumbers =RandomNumbers.toList()
-            val updates = mapOf(
-                "randomNumbers" to listOfNumbers,
-            )
+            val randomNumbers =RandomNumbers.toList()
+            // create formatedd time
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+            val formatted = current.format(formatter)
+            val selectedNumbersEdit = selectedNumbers.toList()
+            val game = Games(userId,formatted, email, selectedNumbersEdit,randomNumbers, 0.0 )
 
             userId?.let {
-                db3.collection("usersNumbers").document(email)
-                    .update(updates)
-                    .addOnSuccessListener { documentReference ->
-                        // Handle success
-                        println("Document added with ID: ${email}")
+                db3.collection("usersGames")
+                    .document()
+                    .set(game)
+                    .addOnSuccessListener {
+                        winmessage.text = "Your numbers are saved!"
                     }
-                    .addOnFailureListener { e ->
-                        // Handle failure
-                        println("Error adding document: $e")
-                    }
+
             }
         }
 
     }
-}}}
+}}

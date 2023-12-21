@@ -1,19 +1,25 @@
 package com.example.lottoapp4
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.TextView
-import android.widget.Toast
+import androidx.annotation.RequiresApi
+import com.example.lottoapp4.Firestore.FireStoreClass
+import com.example.lottoapp4.Firestore.FirestoreData
+import com.example.lottoapp4.Firestore.Games
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.firestore
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class SelectionActivity : AppCompatActivity() {
     val db2 = Firebase.firestore
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_selection)
@@ -68,36 +74,31 @@ class SelectionActivity : AppCompatActivity() {
                 //after that it will be added to "numbersText" textView
                 numbersText.text = text
 
-                //if we add 6 numbers button select will be disabled
-                // and button getRich will be enabled
+
                 if (selectedNumbers.size == numbersArray.size) {
                     selectButton.isEnabled = false
                     getRichButton.isEnabled = true
                     val userId = FirebaseAuth.getInstance().currentUser!!.uid
                     val email =  FirebaseAuth.getInstance().currentUser?.email.toString()
                     val listOfNumbers =selectedNumbers.toList()
-                    val firebaseData = FirestoreData(email, listOfNumbers, null, 0.0)
-
-                    userId?.let {
-                        db2.collection("usersNumbers").document(email)
-                            .set(firebaseData)
-                            .addOnSuccessListener { documentReference ->
-                                // Handle success
-                                println("Document added with ID: ${email}")
-                            }
-                            .addOnFailureListener { e ->
-                                // Handle failure
-                                println("Error adding document: $e")
-                            }
-                }
+                    var formattedDateTime: String = ""
+                    val current = LocalDateTime.now()
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                    formattedDateTime = current.format(formatter)
+                    val game = Games(userId,formattedDateTime, email, listOfNumbers, null, 0.0)
+                    FireStoreClass().setUsersNumbers(this, game)
+                    db2.collection("usersGames")
+                        .document("currentGame")
+                        .set(game)
+                        .addOnSuccessListener {
+                            welcomeText.text = "Your numbers are saved!"
+                        }
             }
         }
-        //if the user clicks on getRichButton next activity will be started
-        //also selected numbers will be transfered to NumbDrawingActivity as a INTArray
+
         getRichButton.setOnClickListener{
 
             val intent4 = Intent(this, DrawingActivity::class.java)
-
             startActivity(intent4)
         }
     }
