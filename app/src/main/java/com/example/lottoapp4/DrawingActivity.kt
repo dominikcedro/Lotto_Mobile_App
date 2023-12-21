@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.example.lottoapp4.Firestore.Games
@@ -26,19 +27,11 @@ class DrawingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_drawing)
 
 
-        val numbersGeneratedButton = findViewById<TextView>(R.id.generateNumbersButton)
+        val numbersGeneratedButton = findViewById<Button>(R.id.generateNumbersButton)
         val number_good = ContextCompat.getColor(this, R.color.victory_green)
         val number_bad = ContextCompat.getColor(this, R.color.no_win_yellow)
         val winmessage = findViewById<TextView>(R.id.winmessage)
 
-        //get selNum from firestore
-        val email =  FirebaseAuth.getInstance().currentUser?.email.toString()
-        db3.collection("usersGames").document("currentGame")
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    val selectedNumbers = document.get("selNumb") as List<Int>
-                }
         //it's a function that generated a set of 6 random numbers with no repetitions
         fun generateRandomNumbers(): MutableSet<Int> {
             val random = Random()
@@ -57,7 +50,7 @@ class DrawingActivity : AppCompatActivity() {
             )
             return buttonIDs[index]
         }
-        fun updateButtonLabels(randomNumbers: Set<Int>) {
+        fun updateButtonLabels(randomNumbers: MutableSet<Int>) {
             // Update each button with a random number
             val buttonIds = arrayOf(
                 R.id.randomnumber1, R.id.randomnumber2,
@@ -69,7 +62,7 @@ class DrawingActivity : AppCompatActivity() {
                 button.text = "${randomNumbers.elementAt(index)}"
             }
         }
-        fun checkNumbersChangeButtons(RandomNumbers:MutableSet<Int>, selectedNumbers:MutableSet<Int>){
+        fun checkNumbersChangeButtons(RandomNumbers:MutableSet<Int>, selectedNumbers:List<Int>){
             val buttonIds = arrayOf(
                 R.id.randomnumber1, R.id.randomnumber2,
                 R.id.randomnumber3, R.id.randomnumber4,
@@ -103,8 +96,8 @@ class DrawingActivity : AppCompatActivity() {
                 button.visibility = View.INVISIBLE
             }
         }
-        fun checkWin(RandomNumbers:MutableSet<Int>, recievedNumbers:MutableSet<Int>){
-            val commonNumbers = RandomNumbers.intersect(recievedNumbers)
+        fun checkWin(RandomNumbers:MutableSet<Int>, selectedNumbers:List<Int>){
+            val commonNumbers = RandomNumbers.intersect(selectedNumbers)
             winmessage.visibility = View.VISIBLE
             if (commonNumbers.size < 3){
                 winmessage.text = "You had less then 3 common numbers! Maybe next time!"
@@ -121,40 +114,37 @@ class DrawingActivity : AppCompatActivity() {
 
 
         numbersGeneratedButton.setOnClickListener {
-            val selectedNumbers = document.get("selNumb") as MutableSet<Int>
-            val RandomNumbers = generateRandomNumbers()
-            numbersGeneratedButton.isEnabled = false
-            hideButtons()
-            updateButtonLabels(RandomNumbers)
-            if (selectedNumbers != null) {
-                checkNumbersChangeButtons(RandomNumbers, selectedNumbers)
+            db3.collection("usersGames").document("currentGame")
+                .get()
+                .addOnSuccessListener { document ->
+                    val selectedNumbers = document.get("selNumb") as List<Int>
+                    val RandomNumbers = generateRandomNumbers() as MutableSet<Int>
+                    numbersGeneratedButton.isEnabled = false
+                    hideButtons()
+                    updateButtonLabels(RandomNumbers)
+                    checkNumbersChangeButtons(RandomNumbers, selectedNumbers)
+                    showButtons()
+                    checkWin(RandomNumbers, selectedNumbers)
 
-            }
-            showButtons()
-            if (selectedNumbers != null) {
-                checkWin(RandomNumbers, selectedNumbers)
-            }
+                    // Create a new Games object with the selected numbers and the generated numbers
+                    val userId = FirebaseAuth.getInstance().currentUser!!.uid
+                    val email = FirebaseAuth.getInstance().currentUser?.email.toString()
+                    val current = LocalDateTime.now()
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+                    val formatted = current.format(formatter)
+                    val editRandomNumbers = RandomNumbers.toList<Int>()
+                    val game = Games(userId, formatted, email, selectedNumbers, editRandomNumbers, 0.0)
 
-            val userId = FirebaseAuth.getInstance().currentUser!!.uid
-            val email =  FirebaseAuth.getInstance().currentUser?.email.toString()
-            val randomNumbers =RandomNumbers.toList()
-            // create formatedd time
-            val current = LocalDateTime.now()
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-            val formatted = current.format(formatter)
-            val selectedNumbersEdit = selectedNumbers.toList()
-            val game = Games(userId,formatted, email, selectedNumbersEdit,randomNumbers, 0.0 )
-
-            userId?.let {
-                db3.collection("usersGames")
-                    .document()
-                    .set(game)
-                    .addOnSuccessListener {
-                        winmessage.text = "Your numbers are saved!"
-                    }
-
-            }
+//                     Save the new Games object to the "currentGame" document in Firestore
+                    db3.collection("usersGames")
+                        .document()
+                        .set(game)
+                        .addOnSuccessListener {
+                        }
+                }
         }
 
     }
-}}
+
+
+}

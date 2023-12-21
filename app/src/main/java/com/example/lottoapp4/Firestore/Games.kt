@@ -1,6 +1,6 @@
 package com.example.lottoapp4.Firestore
 
-data class Games (
+data class Games(
     val id: String = "",
     val time: String = "",
     var email: String = "",

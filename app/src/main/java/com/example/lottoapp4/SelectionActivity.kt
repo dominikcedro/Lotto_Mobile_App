@@ -9,7 +9,6 @@ import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.example.lottoapp4.Firestore.FireStoreClass
-import com.example.lottoapp4.Firestore.FirestoreData
 import com.example.lottoapp4.Firestore.Games
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -80,7 +79,7 @@ class SelectionActivity : AppCompatActivity() {
                     getRichButton.isEnabled = true
                     val userId = FirebaseAuth.getInstance().currentUser!!.uid
                     val email =  FirebaseAuth.getInstance().currentUser?.email.toString()
-                    val listOfNumbers =selectedNumbers.toList()
+                    val listOfNumbers =selectedNumbers.toList<Int>()
                     var formattedDateTime: String = ""
                     val current = LocalDateTime.now()
                     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
